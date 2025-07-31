@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const InvoicesList = () => {
   const [invoices, setInvoices] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchInvoices();
@@ -17,8 +18,11 @@ const InvoicesList = () => {
         "https://mern-invoice-create.onrender.com/api/invoices"
       );
       setInvoices(res.data);
+      setLoading(false);
     } catch (error) {
       alert("Error loading invoices");
+    } finally {
+      setLoading(false);
     }
   };
   //console.log(invoices);
@@ -36,6 +40,13 @@ const InvoicesList = () => {
       }
     }
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <p className="text-2xl">Loading...</p>
+      </div>
+    );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
