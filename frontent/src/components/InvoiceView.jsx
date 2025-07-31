@@ -10,7 +10,9 @@ const InvoiceView = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await axios.get(`http://localhost:4000/api/invoices/${id}`);
+        const res = await axios.get(
+          `https://mern-invoice-create.onrender.com/api/invoices/${id}`
+        );
         setInvoice(res.data);
       } catch (error) {
         alert("Invoice not found");

@@ -13,7 +13,9 @@ const InvoicesList = () => {
 
   const fetchInvoices = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/invoices");
+      const res = await axios.get(
+        "https://mern-invoice-create.onrender.com/api/invoices"
+      );
       setInvoices(res.data);
     } catch (error) {
       alert("Error loading invoices");
@@ -24,7 +26,9 @@ const InvoicesList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
       try {
-        await axios.delete(`http://localhost:4000/api/invoices/${id}`);
+        await axios.delete(
+          `https://mern-invoice-create.onrender.com/api/invoices/${id}`
+        );
         toast.success("Invoice deleted");
         fetchInvoices();
       } catch (error) {

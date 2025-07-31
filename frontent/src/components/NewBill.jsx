@@ -33,7 +33,9 @@ const NewBill = () => {
     if (invoiceId) {
       //console.log(invoiceId);
       axios
-        .get(`http://localhost:4000/api/invoices/${invoiceId}`)
+        .get(
+          `https://mern-invoice-create.onrender.com/api/invoices/${invoiceId}`
+        )
         .then((res) =>
           setInvoice((prev) => ({
             ...prev,
@@ -128,7 +130,7 @@ const NewBill = () => {
     try {
       if (invoiceId) {
         const res = await axios.put(
-          `http://localhost:4000/api/invoices/${invoiceId}`,
+          `https://mern-invoice-create.onrender.com/api/invoices/${invoiceId}`,
           invoice
         );
         if (res.status === 200) {
@@ -139,7 +141,7 @@ const NewBill = () => {
         }
       } else {
         const res = await axios.post(
-          "http://localhost:4000/api/invoices",
+          "https://mern-invoice-create.onrender.com/api/invoices",
           invoice
         );
         if (res.status === 201) {
