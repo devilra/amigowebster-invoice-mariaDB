@@ -13,8 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin:
-      "https://mern-invoice-create-1x5kl3i20-devilras-projects.vercel.app",
+    origin: "https://mern-invoice-create.vercel.app",
     //origin: "http://localhost:5173",
     credentials: true,
   })
