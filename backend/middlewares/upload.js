@@ -1,20 +1,21 @@
+// middleware/upload.js
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
 
-const storage = multer.memoryStorage();
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|webp/;
-  const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
-  const mimetype = allowedTypes.test(file.mimetype);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "invoice-products",
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
+  },
+});
 
-  if (extname && mimetype) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only images are allowed"));
-  }
-};
-
-module.exports = multer({ storage, fileFilter });
+const upload = multer({ storage });
+module.exports = upload;

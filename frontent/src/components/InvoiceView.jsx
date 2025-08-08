@@ -55,6 +55,13 @@ const InvoiceView = () => {
         th {
           background-color: #eee;
         }
+          img {
+      max-width: 60px; /* Width limit */
+      max-height: 60px; /* Height limit */
+      object-fit: cover; /* Prevent stretching */
+      display: block;
+      margin: auto;
+    }
          body { font-family: sans-serif; padding: 20px; }
          .header-flex { display: flex; justify-content: space-between; align-items: flex-start; }
          
@@ -132,10 +139,13 @@ const InvoiceView = () => {
         </div>
         {/* Products Table */}
         <h3 className="font-semibold text-lg text-gray-700 mb-2">Products</h3>
+        {/* Products Table */}
+        <h3 className="font-semibold text-lg text-gray-700 mb-2">Products</h3>
         <div className="overflow-auto">
           <table className="w-full text-sm border">
             <thead>
               <tr className="bg-gray-100 text-gray-800">
+                <th className="p-2 border">Image</th> {/* New column */}
                 <th className="p-2 border">Title</th>
                 <th className="p-2 border">Description</th>
                 <th className="p-2 border">Rate</th>
@@ -146,6 +156,17 @@ const InvoiceView = () => {
             <tbody>
               {invoice.products.map((item, index) => (
                 <tr key={index} className="text-center">
+                  <td className="p-2 border">
+                    {item.image ? (
+                      <img
+                        src={item.image} // make sure invoice data has 'image' key for each product
+                        alt={item.title}
+                        className="w-16 h-16 object-cover mx-auto rounded"
+                      />
+                    ) : (
+                      <span className="text-gray-400 italic">No image</span>
+                    )}
+                  </td>
                   <td className="p-2 border">{item.title}</td>
                   <td className="p-2 border">{item.description}</td>
                   <td className="p-2 border">₹{item.rate}</td>
@@ -156,6 +177,7 @@ const InvoiceView = () => {
             </tbody>
           </table>
         </div>
+
         {/* Summary */}
         <div className="text-right mt-6 space-y-1 text-gray-700 text-sm sm:text-base">
           <p>
