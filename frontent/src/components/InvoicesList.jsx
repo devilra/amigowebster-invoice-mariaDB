@@ -16,7 +16,11 @@ const InvoicesList = () => {
   const fetchInvoices = async () => {
     try {
       const res = await API.get("/api/invoices");
-      setInvoices(res.data);
+      if (Array.isArray(res.data)) {
+        setInvoices(res.data);
+      } else {
+        setInvoices([]);
+      }
       setLoading(false);
     } catch (error) {
       alert("Error loading invoices");
@@ -51,67 +55,68 @@ const InvoicesList = () => {
         All Invoices
       </h2>
       <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
-        <table className="min-w-[700px] w-full bg-white text-sm text-left">
-          <thead className="bg-gray-100 text-gray-700 uppercase text-xs sticky top-0">
-            <tr>
-              <th className="p-3 border">Invoice</th>
-              <th className="p-3 border">Customer</th>
-              <th className="p-3 border">Phone</th>
-              <th className="p-3 border">Total</th>
-              <th className="p-3 border">Paid</th>
-              <th className="p-3 border">Balance</th>
-              <th className="p-3 border">Date</th>
-              <th className="p-3 border text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoices.map((invoice) => (
-              <tr
-                key={invoice._id}
-                className="border-b hover:bg-gray-50 transition duration-200">
-                <td className="p-3 border">{invoice.invoiceNumber}</td>
-                <td className="p-3 border">{invoice.customerName}</td>
-                <td className="p-3 border">{invoice.phone}</td>
-                <td className="p-3 border text-green-600 font-semibold">
-                  ₹{invoice.totalAmount}
-                </td>
-                <td className="p-3 border text-blue-600 font-medium">
-                  ₹{invoice.paidAmount}
-                </td>
-                <td className="p-3 border text-red-600 font-medium">
-                  ₹{invoice.balanceAmount}
-                </td>
-                <td className="p-3 border">
-                  {new Date(invoice.invoiceDate).toLocaleDateString()}
-                </td>
-                <td className="p-3 border text-center space-x-5">
-                  <button
-                    onClick={() => navigate(`/new/${invoice._id}`)}
-                    className="text-blue-600 border px-5 py-1 hover:bg-blue-50">
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(invoice._id)}
-                    className="text-red-600 border px-5 py-1 hover:bg-red-50">
-                    Delete
-                  </button>
-                  <Link
-                    to={`/invoice/${invoice._id}`}
-                    className="text-indigo-600 font-medium hover:underline">
-                    View
-                  </Link>
-                </td>
-              </tr>
-            ))}
-            {invoices.length === 0 && (
+        {invoices.length === 0 ? (
+          <tr className="flex justify-center">
+            <td colSpan="8" className="p-4 text-center text-gray-500">
+              No invoices found.
+            </td>
+          </tr>
+        ) : (
+          <table className="min-w-[700px] w-full bg-white text-sm text-left">
+            <thead className="bg-gray-100 text-gray-700 uppercase text-xs sticky top-0">
               <tr>
-                <td colSpan="8" className="p-4 text-center text-gray-500">
-                  No invoices found.
-                </td>
+                <th className="p-3 border">Invoice</th>
+                <th className="p-3 border">Customer</th>
+                <th className="p-3 border">Phone</th>
+                <th className="p-3 border">Total</th>
+                <th className="p-3 border">Paid</th>
+                <th className="p-3 border">Balance</th>
+                <th className="p-3 border">Date</th>
+                <th className="p-3 border text-center">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {invoices.map((invoice) => (
+                <tr
+                  key={invoice._id}
+                  className="border-b hover:bg-gray-50 transition duration-200">
+                  <td className="p-3 border">{invoice.invoiceNumber}</td>
+                  <td className="p-3 border">{invoice.customerName}</td>
+                  <td className="p-3 border">{invoice.phone}</td>
+                  <td className="p-3 border text-green-600 font-semibold">
+                    ₹{invoice.totalAmount}
+                  </td>
+                  <td className="p-3 border text-blue-600 font-medium">
+                    ₹{invoice.paidAmount}
+                  </td>
+                  <td className="p-3 border text-red-600 font-medium">
+                    ₹{invoice.balanceAmount}
+                  </td>
+                  <td className="p-3 border">
+                    {new Date(invoice.invoiceDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-3 border text-center space-x-5">
+                    <button
+                      onClick={() => navigate(`/new/${invoice._id}`)}
+                      className="text-blue-600 border px-5 py-1 hover:bg-blue-50">
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(invoice._id)}
+                      className="text-red-600 border px-5 py-1 hover:bg-red-50">
+                      Delete
+                    </button>
+                    <Link
+                      to={`/invoice/${invoice._id}`}
+                      className="text-indigo-600 font-medium hover:underline">
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
