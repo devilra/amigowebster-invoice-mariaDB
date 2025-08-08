@@ -220,7 +220,14 @@ const InvoiceView = () => {
         </table>
 
         {/* Summary */}
-        <div className="text-right mt-6 space-y-1 text-gray-700 text-sm sm:text-base">
+        <div
+          style={{
+            width: "100%",
+            textAlign: "right",
+            display: "block",
+            marginLeft: "auto",
+          }}
+          className="text-right mt-6 space-y-1 text-gray-700 text-sm sm:text-base">
           <p>
             <strong>Total:</strong> ₹{invoice.totalAmount}
           </p>
