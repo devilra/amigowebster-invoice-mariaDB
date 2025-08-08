@@ -3,6 +3,7 @@ import axios from "axios";
 import { ToastContainer, Zoom, toast } from "react-toastify";
 import { ImCross } from "react-icons/im";
 import { useNavigate, useParams } from "react-router-dom";
+import API from "../api";
 
 const NewBill = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const NewBill = () => {
     phone: "",
     address: "",
     invoiceDate: "",
+    image: null,
     products: [
       {
         title: "",
@@ -32,10 +34,7 @@ const NewBill = () => {
   useEffect(() => {
     if (invoiceId) {
       //console.log(invoiceId);
-      axios
-        .get(
-          `https://mern-invoice-create.onrender.com/api/invoices/${invoiceId}`
-        )
+      API.get(`/api/invoices/${invoiceId}`)
         .then((res) =>
           setInvoice((prev) => ({
             ...prev,
@@ -86,53 +85,11 @@ const NewBill = () => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-
-  //     const res = await axios.post(
-  //       "http://localhost:4000/api/invoices",
-  //       invoice
-  //     );
-  //     // toast.success("Invoce Created Successfully");
-  //     if (res && res.request.status === 201) {
-  //       console.log(res.request);
-  //       toast.success("Invoce Created Successfully");
-  //       setTimeout(() => {
-  //         navigate("/invoices");
-  //       }, 1000);
-  //       setInvoice({
-  //         customerName: "",
-  //         phone: "",
-  //         address: "",
-  //         invoiceDate: "",
-  //         products: [
-  //           {
-  //             title: "",
-  //             description: "",
-  //             rate: 0,
-  //             quantity: 0,
-  //             amount: 0,
-  //           },
-  //         ],
-  //         totalAmount: 0,
-  //         paidAmount: 0,
-  //         balanceAmount: 0,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     toast.error("Something went wrong");
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (invoiceId) {
-        const res = await axios.put(
-          `https://mern-invoice-create.onrender.com/api/invoices/${invoiceId}`,
-          invoice
-        );
+        const res = await API.put(`/api/invoices/${invoiceId}`, invoice);
         if (res.status === 200) {
           toast.success("Invoice Updated Successfully");
           setTimeout(() => {
@@ -140,10 +97,7 @@ const NewBill = () => {
           }, 1000);
         }
       } else {
-        const res = await axios.post(
-          "https://mern-invoice-create.onrender.com/api/invoices",
-          invoice
-        );
+        const res = await API.post("/api/invoices", invoice);
         if (res.status === 201) {
           toast.success("Invoice Created Successfully");
         }
@@ -227,6 +181,7 @@ const NewBill = () => {
             <table className="w-full text-sm border">
               <thead className="bg-gray-100 text-left">
                 <tr>
+                  {/* <th className="p-2">Product Image</th> */}
                   <th className="p-2">Title</th>
                   <th className="p-2">Description</th>
                   <th className="p-2">Rate</th>
@@ -238,6 +193,41 @@ const NewBill = () => {
               <tbody>
                 {invoice.products.map((item, index) => (
                   <tr key={index} className="border-t">
+                    {/* <td>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files[0];
+                          if (!file) return;
+
+                          const formData = new FormData();
+                          formData.append("image", file);
+
+                          try {
+                            const res = await API.post(
+                              "/api/upload",
+                              formData,
+                              {
+                                headers: {
+                                  "Content-Type": "multipart/form-data",
+                                },
+                              }
+                            );
+                            handleProductChange(index, "image", res.data.url);
+                          } catch {
+                            toast.error("Image upload failed");
+                          }
+                        }}
+                      />
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt="product"
+                          className="w-10 h-10 object-cover rounded border mx-auto"
+                        />
+                      )}
+                    </td> */}
                     <td>
                       <input
                         value={item.title}

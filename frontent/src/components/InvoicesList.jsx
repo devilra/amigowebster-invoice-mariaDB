@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API from "../api";
 
 const InvoicesList = () => {
   const [invoices, setInvoices] = useState([]);
@@ -14,9 +15,7 @@ const InvoicesList = () => {
 
   const fetchInvoices = async () => {
     try {
-      const res = await axios.get(
-        "https://mern-invoice-create.onrender.com/api/invoices"
-      );
+      const res = await API.get("/api/invoices");
       setInvoices(res.data);
       setLoading(false);
     } catch (error) {
@@ -30,9 +29,7 @@ const InvoicesList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
       try {
-        await axios.delete(
-          `https://mern-invoice-create.onrender.com/api/invoices/${id}`
-        );
+        await API.delete(`/api/invoices/${id}`);
         toast.success("Invoice deleted");
         fetchInvoices();
       } catch (error) {

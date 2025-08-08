@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
   rate: Number,
   quantity: Number,
   amount: Number,
+  image: String,
 });
 
 const invoiceSchema = new mongoose.Schema({

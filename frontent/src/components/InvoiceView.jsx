@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import API from "../api";
 
 const InvoiceView = () => {
   const { id } = useParams();
@@ -10,9 +10,7 @@ const InvoiceView = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const res = await axios.get(
-          `https://mern-invoice-create.onrender.com/api/invoices/${id}`
-        );
+        const res = await API.get(`/api/invoices/${id}`);
         setInvoice(res.data);
       } catch (error) {
         alert("Invoice not found");
@@ -58,16 +56,20 @@ const InvoiceView = () => {
           background-color: #eee;
         }
          body { font-family: sans-serif; padding: 20px; }
+         .header-flex { display: flex; justify-content: space-between; align-items: flex-start; }
+         
          table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
          th { background-color: #eee; }
         </style>
-        
+
         </head>
         <body>
-            ${htmlContent}
+        
+          ${htmlContent}
+   
         </body>
         </html>
-        
+
         `);
       pri.document.close();
       pri.onload = () => {
@@ -98,25 +100,34 @@ const InvoiceView = () => {
       <div
         ref={printRef}
         className="bg-white p-6 shadow rounded-md border overflow-x-auto">
-        <div className="mb-6">
-          <h3 className="font-semibold text-lg text-gray-700 mb-2">
-            Customer Info
-          </h3>
-          <div className="space-y-1 text-sm text-gray-600">
-            <p>
-              <strong>Name:</strong>
-              {invoice.customerName}
-            </p>
-            <p>
-              <strong>Phone:</strong> {invoice.phone}
-            </p>
-            <p>
-              <strong>Address:</strong> {invoice.address}
-            </p>
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(invoice.invoiceDate).toLocaleDateString()}
-            </p>
+        <div className="mb-6 flex justify-between header-flex">
+          <div>
+            <h1 className="font-extrabold">GPM PROPERTIES</h1>
+            <h1 className="text-[14px]" style={{ fontSize: "18px" }}>
+              Buissness Number
+            </h1>
+            <p style={{ fontSize: "15px" }}>9176552727</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg text-gray-700 mb-2">
+              Customer Info
+            </h3>
+            <div className="space-y-1 text-sm text-gray-600">
+              <p>
+                <strong>Name:</strong>
+                {invoice.customerName}
+              </p>
+              <p>
+                <strong>Phone:</strong> {invoice.phone}
+              </p>
+              <p>
+                <strong>Address:</strong> {invoice.address}
+              </p>
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(invoice.invoiceDate).toLocaleDateString()}
+              </p>
+            </div>
           </div>
         </div>
         {/* Products Table */}
