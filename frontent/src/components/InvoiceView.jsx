@@ -114,32 +114,65 @@ const InvoiceView = () => {
       <div
         ref={printRef}
         className="bg-white p-6 shadow rounded-md border overflow-x-auto">
-        <div className="mb-6 flex justify-between header-flex">
+        <div className="mb-6 ">
           <div>
-            <h1 className="font-extrabold">GPM PROPERTIES</h1>
-            <h1 className="text-[14px]" style={{ fontSize: "18px" }}>
-              Business Number
-            </h1>
-            <p style={{ fontSize: "15px" }}>9176552727</p>
+            <img
+              src="/inlogo.jpg"
+              alt="GPM"
+              style={{
+                width: "70px",
+                height: "70px",
+                borderRadius: "50px",
+                margin: "10px",
+              }}
+            />
           </div>
-          <div>
-            <h3 className="font-semibold text-lg text-gray-700 mb-2">
-              Customer Info
-            </h3>
-            <div className="space-y-1 text-sm text-gray-600">
-              <p>
-                <strong>Name:</strong> {invoice.customerName}
+          <div className="flex justify-between header-flex">
+            <div>
+              <h1 className="font-extrabold">GPM PROPERTIES</h1>
+              <h1
+                style={{ fontFamily: "sans-serif", fontSize: "14px" }}
+                className="text-[14px]">
+                Business Number
+              </h1>
+              <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>
+                9176552727
               </p>
-              <p>
-                <strong>Phone:</strong> {invoice.phone}
+              <p style={{ fontSize: "12px", fontFamily: "monospace" }}>
+                GPM silver spring
+                <br />
+                apt, Nanmangalam
+                <br />
+                chennai
+                <br />
+                600129
+                <br />
+                9176552727
+                <br />
+                info@gpmproperties.in
               </p>
-              <p>
-                <strong>Address:</strong> {invoice.address}
-              </p>
-              <p>
-                <strong>Date:</strong>{" "}
-                {new Date(invoice.invoiceDate).toLocaleDateString()}
-              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg text-gray-700 mb-2">
+                Customer Info
+              </h3>
+              <div
+                style={{ fontFamily: "monospace" }}
+                className="text-sm text-gray-600">
+                <p>
+                  <strong>Name:</strong> {invoice.customerName}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {invoice.phone}
+                </p>
+                <p>
+                  <strong>Address:</strong> {invoice.address}
+                </p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(invoice.invoiceDate).toLocaleDateString()}
+                </p>
+              </div>
             </div>
           </div>
         </div>
