@@ -282,6 +282,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api";
 import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const InvoiceView = () => {
   const { id } = useParams();
@@ -300,11 +302,32 @@ const InvoiceView = () => {
     fetchInvoice();
   }, [id]);
 
+  // Desktop print
+
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
     documentTitle: `Invoice-${id}`, // sets the file name
     removeAfterPrint: true, // clean up after print
   });
+
+  // Mobile-friendly PDF download
+
+  const handleDownloadPDF = async () => {
+    const element = printRef.current;
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`Invoice-${id}.pdf`);
+
+    pdf.autoPrint();
+    const blobUrl = pdf.output("bloburl");
+    window.open(blobUrl);
+  };
 
   if (!invoice) {
     return (
@@ -336,11 +359,18 @@ const InvoiceView = () => {
         <h2 className="text-xl md:text-2xl font-bold text-gray-800">
           Invoice #{invoice.invoiceNumber}
         </h2>
-        <button
-          onClick={handlePrint}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-          Print Invoice
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handlePrint}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Print
+          </button>
+          <button
+            onClick={handleDownloadPDF}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            Download PDF
+          </button>
+        </div>
       </div>
 
       <div
