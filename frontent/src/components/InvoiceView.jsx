@@ -312,9 +312,34 @@ const InvoiceView = () => {
 
   // Mobile-friendly PDF download
 
+  // const handleDownloadPDF = async () => {
+  //   const element = printRef.current;
+  //   const canvas = await html2canvas(element, { scale: 2 });
+  //   const imgData = canvas.toDataURL("image/png");
+
+  //   const pdf = new jsPDF("p", "mm", "a4");
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+  //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  //   pdf.save(`Invoice-${id}.pdf`);
+
+  //   pdf.autoPrint();
+  //   const blobUrl = pdf.output("bloburl");
+  //   window.open(blobUrl);
+  // };
+
   const handleDownloadPDF = async () => {
+    // Backup original styles
+    const originalWidth = document.body.style.width;
+    const originalZoom = document.body.style.zoom;
+
+    // Force desktop layout for PDF generation
+    document.body.style.width = "1024px"; // force wider layout
+    document.body.style.zoom = "1";
+
     const element = printRef.current;
-    const canvas = await html2canvas(element, { scale: 2 });
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
     const imgData = canvas.toDataURL("image/png");
 
     const pdf = new jsPDF("p", "mm", "a4");
@@ -324,9 +349,9 @@ const InvoiceView = () => {
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     pdf.save(`Invoice-${id}.pdf`);
 
-    pdf.autoPrint();
-    const blobUrl = pdf.output("bloburl");
-    window.open(blobUrl);
+    // Restore original styles
+    document.body.style.width = originalWidth;
+    document.body.style.zoom = originalZoom;
   };
 
   if (!invoice) {
