@@ -80,6 +80,18 @@ const NewBill = () => {
   };
 
   const addProductRow = () => {
+    const lastProduct = invoice.products[invoice.products.length - 1];
+    if (
+      !lastProduct.title.trim() ||
+      !lastProduct.description.trim() ||
+      !lastProduct.quantity ||
+      !lastProduct.rate
+    ) {
+      toast.warning(
+        "Please complete the current product details before adding a new one"
+      );
+      return;
+    }
     setInvoice((prev) => ({
       ...prev,
       products: [
@@ -231,6 +243,7 @@ const NewBill = () => {
             type="date"
             className="border p-2 rounded w-full"
             value={invoice.invoiceDate}
+            placeholder="Select Date"
             onChange={(e) =>
               setInvoice({ ...invoice, invoiceDate: e.target.value })
             }
@@ -293,10 +306,10 @@ const NewBill = () => {
                             const file = e.target.files?.[0];
                             if (file) handleImageSelect(index, file);
                           }}
-                          className="text-xs hidden border"
+                          className="text-xs hidden border mx-5 md:mx-3"
                         />
                         <label
-                          className="cursor-pointer text-[12px]"
+                          className="cursor-pointer text-[12px] mx-5 md:mx-mx-3"
                           htmlFor={`fileInput-${index}`}>
                           choose file
                         </label>
@@ -323,7 +336,7 @@ const NewBill = () => {
                       </div>
                     </td>
 
-                    <td>
+                    <td className="">
                       <input
                         value={item.title}
                         required
@@ -411,35 +424,50 @@ const NewBill = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <input
-              type="number"
-              placeholder="Total"
-              className="border p-2 rounded w-full"
-              value={invoice.totalAmount}
-              readOnly
-            />
-            <input
-              type="number"
-              placeholder="Paid"
-              className="border p-2 rounded w-full"
-              value={invoice.paidAmount}
-              onChange={(e) => {
-                const paid = parseFloat(e.target.value) || 0;
-                setInvoice((prev) => ({
-                  ...prev,
-                  paidAmount: paid,
-                  balanceAmount: prev.totalAmount - paid,
-                }));
-              }}
-            />
-            <input
-              type="number"
-              placeholder="Balance"
-              className="border p-2 rounded w-full"
-              value={invoice.balanceAmount}
-              readOnly
-            />
+          <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-3 gap-4">
+            <div className="">
+              <label className="font-bold" htmlFor="">
+                Total :
+              </label>
+              <input
+                type="number"
+                placeholder="Total"
+                className="border p-2 rounded w-full"
+                value={invoice.totalAmount}
+                readOnly
+              />
+            </div>
+            <div>
+              <label className="font-bold" htmlFor="">
+                Paid :
+              </label>
+              <input
+                type="number"
+                placeholder="Paid"
+                className="border p-2 rounded w-full"
+                value={invoice.paidAmount}
+                onChange={(e) => {
+                  const paid = parseFloat(e.target.value) || 0;
+                  setInvoice((prev) => ({
+                    ...prev,
+                    paidAmount: paid,
+                    balanceAmount: prev.totalAmount - paid,
+                  }));
+                }}
+              />
+            </div>
+            <div>
+              <label className="font-bold" htmlFor="">
+                Balance :
+              </label>
+              <input
+                type="number"
+                placeholder="Balance"
+                className="border p-2 rounded w-full"
+                value={invoice.balanceAmount}
+                readOnly
+              />
+            </div>
           </div>
 
           <div className="text-center">
