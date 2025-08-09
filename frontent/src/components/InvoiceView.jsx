@@ -310,7 +310,30 @@ const InvoiceView = () => {
     removeAfterPrint: true, // clean up after print
   });
 
-  // Mobile-friendly PDF download
+  const handleDownloadPDF = async () => {
+    // Backup original styles
+    const originalWidth = document.body.style.width;
+    const originalZoom = document.body.style.zoom;
+
+    // Force desktop layout for PDF generation
+    document.body.style.width = "1024px"; // force wider layout
+    document.body.style.zoom = "1";
+
+    const element = printRef.current;
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`Invoice-${id}.pdf`);
+
+    // Restore original styles
+    document.body.style.width = originalWidth;
+    document.body.style.zoom = originalZoom;
+  };
 
   // const handleDownloadPDF = async () => {
   //   const element = printRef.current;
@@ -322,61 +345,19 @@ const InvoiceView = () => {
   //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
   //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  //   pdf.save(`Invoice-${id}.pdf`);
 
-  //   pdf.autoPrint();
-  //   const blobUrl = pdf.output("bloburl");
-  //   window.open(blobUrl);
+  //   // Instead of saving directly, open in new tab
+  //   const pdfBlob = pdf.output("blob");
+  //   const pdfUrl = URL.createObjectURL(pdfBlob);
+
+  //   const newWindow = window.open(pdfUrl, "_blank");
+  //   if (newWindow) {
+  //     // Wait a bit to ensure PDF loads, then print
+  //     newWindow.onload = () => {
+  //       newWindow.print();
+  //     };
+  //   }
   // };
-
-  // const handleDownloadPDF = async () => {
-  //   // Backup original styles
-  //   const originalWidth = document.body.style.width;
-  //   const originalZoom = document.body.style.zoom;
-
-  //   // Force desktop layout for PDF generation
-  //   document.body.style.width = "1024px"; // force wider layout
-  //   document.body.style.zoom = "1";
-
-  //   const element = printRef.current;
-  //   const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-  //   const imgData = canvas.toDataURL("image/png");
-
-  //   const pdf = new jsPDF("p", "mm", "a4");
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  //   pdf.save(`Invoice-${id}.pdf`);
-
-  //   // Restore original styles
-  //   document.body.style.width = originalWidth;
-  //   document.body.style.zoom = originalZoom;
-  // };
-
-  const handleDownloadPDF = async () => {
-    const element = printRef.current;
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-    // Instead of saving directly, open in new tab
-    const pdfBlob = pdf.output("blob");
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    const newWindow = window.open(pdfUrl, "_blank");
-    if (newWindow) {
-      // Wait a bit to ensure PDF loads, then print
-      newWindow.onload = () => {
-        newWindow.print();
-      };
-    }
-  };
 
   if (!invoice) {
     return (
