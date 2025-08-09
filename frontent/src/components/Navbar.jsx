@@ -59,7 +59,7 @@ const Navbar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `text-neutral-50 text-[10px]  font-bold  px-3 py-3 rounded text-center ${
+            ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
           }>
@@ -68,7 +68,7 @@ const Navbar = () => {
         <NavLink
           to="/invoices"
           className={({ isActive }) =>
-            `text-neutral-50 text-[10px]  font-bold  px-3 py-3 rounded text-center ${
+            ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
           }>
@@ -77,7 +77,7 @@ const Navbar = () => {
         <NavLink
           to="/new"
           className={({ isActive }) =>
-            `text-neutral-50 text-[10px]  font-bold  px-3 py-3 rounded text-center ${
+            ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
           }>
