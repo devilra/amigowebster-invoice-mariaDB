@@ -34,7 +34,7 @@ exports.createInvoice = async (req, res) => {
 exports.getAllInvoices = async (req, res) => {
   try {
     const { date } = req.query;
-    // console.log(date);
+    //console.log(date);
     let filter = {};
 
     if (date) {

@@ -21,8 +21,9 @@ const InvoicesList = () => {
     try {
       let url = "/api/invoices";
       if (date) {
-        const isoDate = date.toISOString().split("T")[0];
-        url += `?date=${isoDate}`;
+        //const isoDate = date.toISOString().split("T")[0];
+        const localDate = date.toLocaleDateString("en-CA");
+        url += `?date=${localDate}`;
       }
 
       const res = await API.get(url);
