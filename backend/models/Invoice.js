@@ -22,6 +22,8 @@ const invoiceSchema = new mongoose.Schema({
     required: true,
   },
   phone: String,
+  invoiceDate: Date,
+
   address: String,
   invoiceDate: Date,
   products: [productSchema],

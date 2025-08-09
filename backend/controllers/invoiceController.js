@@ -33,7 +33,25 @@ exports.createInvoice = async (req, res) => {
 
 exports.getAllInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find().sort({ createAt: -1 });
+    const { date } = req.query;
+    // console.log(date);
+    let filter = {};
+
+    if (date) {
+      const start = new Date(date + "T00:00:00.000Z");
+      //start.setHours(0, 0, 0, 0);
+      const end = new Date(date + "T23:59:59.999Z");
+      // end.setHours(23, 59, 59, 999);
+
+      console.log(date, start, end);
+
+      filter.invoiceDate = {
+        $gte: start,
+        $lte: end,
+      };
+    }
+
+    const invoices = await Invoice.find(filter).sort({ invoiceDate: -1 });
     if (invoices.length === 0) {
       return res.json({
         msg: "No invoices",
@@ -41,7 +59,7 @@ exports.getAllInvoices = async (req, res) => {
     }
     res.json(invoices);
   } catch (error) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
