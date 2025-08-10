@@ -16,17 +16,17 @@ const NewBill = () => {
       {
         title: "",
         description: "",
-        rate: 0,
-        quantity: 0,
-        cgst: 0,
-        sgst: 0,
-        amount: 0,
+        rate: "",
+        quantity: "",
+        cgst: "",
+        sgst: "",
+        amount: "",
         image: null, // ensure product has image field
         _uploading: false, // local flag per product (not saved to server)
       },
     ],
     totalAmount: 0,
-    paidAmount: 0,
+    paidAmount: "",
     balanceAmount: 0,
   });
 
@@ -67,9 +67,9 @@ const NewBill = () => {
               {
                 title: "",
                 description: "",
-                rate: 0,
-                quantity: 0,
-                amount: 0,
+                rate: "",
+                quantity: "",
+                amount: "",
                 image: null,
                 _uploading: false,
               },
@@ -99,9 +99,9 @@ const NewBill = () => {
         {
           title: "",
           description: "",
-          rate: 0,
-          quantity: 0,
-          amount: 0,
+          rate: "",
+          quantity: "",
+          amount: "",
           image: null,
           _uploading: false,
         },
@@ -374,7 +374,7 @@ const NewBill = () => {
                     <td>
                       <input
                         type="number"
-                        value={item.cgst || 0}
+                        value={item.cgst}
                         className="p-1 border w-full"
                         onChange={(e) =>
                           handleProductChange(index, "cgst", e.target.value)
@@ -384,7 +384,7 @@ const NewBill = () => {
                     <td>
                       <input
                         type="number"
-                        value={item.sgst || 0}
+                        value={item.sgst}
                         className="p-1 border w-full"
                         onChange={(e) =>
                           handleProductChange(index, "sgst", e.target.value)

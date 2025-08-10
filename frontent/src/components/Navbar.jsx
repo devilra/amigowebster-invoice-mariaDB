@@ -15,7 +15,7 @@ const Navbar = () => {
           {/* Left side - Home link */}
           <div>
             <NavLink
-              to="/"
+              to="/dashboard"
               className={({ isActive }) =>
                 ` text-[15px] mx-2 font-bold  px-5 py-4 rounded text-center ${
                   isActive ? "bg-white text-black" : "text-neutral-50"
@@ -57,7 +57,7 @@ const Navbar = () => {
       {/* Mobile Bottom fixed navbar */}
       <nav className="fixed bottom-0  left-0 right-0 bg-neutral-900 p-2 flex justify-around md:hidden z-50 border-t border-neutral-700">
         <NavLink
-          to="/"
+          to="/dashboard"
           className={({ isActive }) =>
             ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"

@@ -1,6 +1,7 @@
 const Invoice = require("../models/Invoice");
 
 exports.createInvoice = async (req, res) => {
+  //console.log(req.user);
   try {
     const lastInvoice = await Invoice.findOne().sort({ invoiceNumber: -1 });
     let newNumber = 1;
@@ -17,6 +18,7 @@ exports.createInvoice = async (req, res) => {
 
     const invoice = new Invoice({
       ...req.body,
+      //user: req.user._id,
       invoiceNumber: autoInvoiceNumber,
     });
 
@@ -103,5 +105,21 @@ exports.editInvoice = async (req, res) => {
     res.json(updated);
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+};
+
+// Get Total Unique Customers
+
+exports.getTotalCustomers = async (req, res) => {
+  try {
+    const customers = await Invoice.distinct("customerName");
+    //console.log(customers);
+    if (!customers || customers.length === 0) {
+      return res.status(404).json({ message: "Invoice not found" });
+    }
+
+    res.status(200).json({ totalCustomers: customers.length });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import InvoicesList from "./components/InvoicesList";
@@ -9,6 +9,11 @@ import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { getMe } from "./redux/Slices/authSlice";
+import NotFound from "./components/NotFound";
+import Dashboard from "./Dashboard/Dashboard";
+import Customers from "./Dashboard/Customers";
+import { getAllCustomers, getInvoices } from "./services/invoiceService";
+import API from "./api";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,16 +24,18 @@ const App = () => {
     dispatch(getMe());
   }, [dispatch]);
 
-  const validNavbar = ["/login"];
   const location = useLocation();
 
-  // if (loading) {
-  //   return <p>Loading....</p>;
-  // }
+  const noNavbarRoutes = ["/login", "/register"];
+  const validRoutes = ["/", "/invoices", "/new", "/invoice"];
+
+  const is404 = !validRoutes.some((path) => location.pathname.startsWith(path));
+
+  const shouldNavbar = noNavbarRoutes.includes(location.pathname) || is404;
 
   return (
     <>
-      {!validNavbar.includes(location.pathname) && <Navbar />}
+      {!shouldNavbar && <Navbar />}
       <Routes>
         <Route
           path="/"
@@ -36,8 +43,11 @@ const App = () => {
             <ProtectedRoutes>
               <HomePage />
             </ProtectedRoutes>
-          }
-        />
+          }>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="customer" element={<Customers />} />
+        </Route>
+
         <Route
           path="/invoices"
           element={
@@ -57,6 +67,7 @@ const App = () => {
         <Route path="/invoice/:id" element={<InvoiceView />} />
         <Route path="/new/:invoiceId" element={<NewBill />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

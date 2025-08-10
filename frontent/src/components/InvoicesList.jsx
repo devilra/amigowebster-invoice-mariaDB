@@ -14,7 +14,7 @@ const InvoicesList = () => {
   useEffect(() => {
     fetchInvoices();
   }, []);
-  console.log(invoices);
+  //console.log(invoices);
 
   const fetchInvoices = async (date) => {
     setLoading(true);
@@ -45,8 +45,10 @@ const InvoicesList = () => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
       try {
         await API.delete(`/api/invoices/${id}`);
-        toast.success("Invoice deleted");
-        fetchInvoices();
+        //toast.success("Invoice deleted");
+        setTimeout(() => {
+          fetchInvoices();
+        }, 1300);
       } catch (error) {
         toast.error("Delete failed");
       }
