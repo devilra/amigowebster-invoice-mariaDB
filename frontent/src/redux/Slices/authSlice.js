@@ -52,9 +52,9 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     //Login
     builder
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-      })
+      // .addCase(loginUser.pending, (state) => {
+      //   state.loading = true;
+      // })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
