@@ -78,13 +78,13 @@ const Dashboard = () => {
   if (loading) return <p className="text-lg text-center mt-20">Loading...</p>;
 
   return (
-    <div className="p-5">
+    <div className="p-5 ">
       <h1 className="text-2xl font-bold mb-5">📊 Analytics Dashboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat, index) => (
           <div
             key={index}
-            className={`text-white p-5 md:py-12 rounded-xl shadow-lg flex flex-col md:flex md:justify-between md:flex-col items-center justify-center ${stat.color}`}>
+            className={`text-white  p-5 md:py-12 rounded-xl shadow-lg flex flex-col md:flex md:justify-between md:flex-col items-center justify-center ${stat.color}`}>
             <h2 className="text-lg font-semibold">{stat.title}</h2>
             <p className=" font-extrabold text-xl py-2"> {stat.value}</p>
           </div>
