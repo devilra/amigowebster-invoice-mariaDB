@@ -4,6 +4,6 @@ const { getTotalAmount } = require("../controllers/invoiceAnalytic");
 
 const router = express.Router();
 
-router.get("/total-amount", authMiddleware, getTotalAmount);
+router.get("/total-amount", getTotalAmount);
 
 module.exports = router;

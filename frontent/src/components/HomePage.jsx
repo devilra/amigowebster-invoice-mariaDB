@@ -56,7 +56,7 @@ const HomePage = () => {
       </div>
 
       {/* Right Sidebar - Desktop only */}
-      <div className="md:block  w-full pb-20   bg-white shadow-md">
+      <div className=" w-full pb-20   bg-white shadow-md">
         <DashboardNavbar />
         <div className="text-gray-500 p-4 h-[100%] font-medium">
           <Outlet />
