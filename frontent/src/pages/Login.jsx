@@ -5,14 +5,17 @@ import { loginUser } from "../redux/Slices/authSlice";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, loading } = useSelector((state) => state.auth);
+  const { error } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const res = await dispatch(loginUser(form));
     if (res.meta.requestStatus === "fulfilled") {
+      setLoading(false);
       navigate("/");
     }
   };
@@ -46,7 +49,9 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition disabled:opacity-60">
+          className={`w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition disabled:opacity-60 ${
+            loading && "cursor-not-allowed"
+          }`}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>

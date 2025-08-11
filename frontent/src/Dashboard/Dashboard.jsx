@@ -12,22 +12,34 @@ const Dashboard = () => {
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalPaidAmount, setTotalPaidAmount] = useState(0);
+  const [balanceAmount, setBalanceAmount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [invoiceRes, customerRes, amountRes] = await Promise.all([
+        const [
+          invoiceRes,
+          customerRes,
+          amountRes,
+          totalPaidAmount,
+          balanceAmount,
+        ] = await Promise.all([
           API.get("/api/invoices"),
           API.get("/api/invoices/total-customers"),
           API.get("/api/analytics/total-amount"),
+          API.get("/api/analytics/total-paid-amount"),
+          API.get("/api/analytics/total-balance"),
         ]);
         console.log(invoiceRes.data.length, totalCustomers);
         setLoading(false);
         setInvoiceCount(
           Array.isArray(invoiceRes.data) ? invoiceRes.data.length : 0
         );
-        setTotalCustomers(customerRes.data.totalCustomers || 0);
-        setTotalAmount(amountRes.data.totalAmount || 0);
+        setTotalCustomers(customerRes.data?.totalCustomers || 0);
+        setTotalAmount(amountRes.data?.totalAmount || 0);
+        setTotalPaidAmount(totalPaidAmount.data?.totalPaid || 0);
+        setBalanceAmount(balanceAmount.data?.totalBalanceAmount || 0);
       } catch (error) {
         console.error(error);
       }
@@ -63,16 +75,25 @@ const Dashboard = () => {
     },
     {
       title: "Total Revenue",
-      value: `₹${totalAmount}`,
+      value: totalAmount,
       icon: <FaShoppingCart size={20} />,
       color: "bg-yellow-500",
+      isCurrency: true,
     },
-    // {
-    //   title: "Monthly Revenue",
-    //   value: "₹1,20,000",
-    //   icon: <FaChartLine size={60} className="px-5" />,
-    //   color: "bg-purple-500 text-[15px]",
-    // },
+    {
+      title: "Total Paid",
+      value: totalPaidAmount,
+      icon: <FaChartLine size={60} className="px-5" />,
+      color: "bg-purple-500 text-[15px]",
+      isCurrency: true,
+    },
+    {
+      title: "Balance Amount",
+      value: balanceAmount,
+      icon: <FaChartLine size={60} className="px-5" />,
+      color: "bg-orange-500 text-[15px]",
+      isCurrency: true,
+    },
   ];
 
   if (loading) return <p className="text-lg text-center mt-20">Loading...</p>;
@@ -86,7 +107,12 @@ const Dashboard = () => {
             key={index}
             className={`text-white  p-5 md:py-12 rounded-xl shadow-lg flex flex-col md:flex md:justify-between md:flex-col items-center justify-center ${stat.color}`}>
             <h2 className="text-lg font-semibold">{stat.title}</h2>
-            <p className=" font-extrabold text-xl py-2"> {stat.value}</p>
+            <p className=" font-extrabold text-xl py-2">
+              {" "}
+              {stat.isCurrency
+                ? `₹${stat.value.toLocaleString("en-IN")}`
+                : stat.value.toLocaleString("en-IN")}
+            </p>
           </div>
         ))}
       </div>

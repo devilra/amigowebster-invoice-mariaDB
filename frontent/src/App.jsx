@@ -12,7 +12,6 @@ import { getMe } from "./redux/Slices/authSlice";
 import NotFound from "./components/NotFound";
 import Dashboard from "./Dashboard/Dashboard";
 import Customers from "./Dashboard/Customers";
-import { getAllCustomers, getInvoices } from "./services/invoiceService";
 import API from "./api";
 
 const App = () => {

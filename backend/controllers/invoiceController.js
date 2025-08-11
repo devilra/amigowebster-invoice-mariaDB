@@ -1,4 +1,5 @@
 const Invoice = require("../models/Invoice");
+const TotalPaidInvoice = require("../models/totalPaidInvoice");
 
 exports.createInvoice = async (req, res) => {
   //console.log(req.user);
@@ -23,6 +24,18 @@ exports.createInvoice = async (req, res) => {
     });
 
     await invoice.save();
+
+    if (invoice.paidAmount > 0) {
+      let record = await TotalPaidInvoice.findOne();
+      if (!record) {
+        record = await TotalPaidInvoice.create({
+          totalPaid: invoice.paidAmount,
+        });
+      } else {
+        record.totalPaid += invoice.paidAmount;
+        await record.save();
+      }
+    }
 
     res.status(201).json({
       msg: "Invoice save Successfull",
