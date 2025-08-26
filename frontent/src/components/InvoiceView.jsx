@@ -166,12 +166,15 @@ const InvoiceView = () => {
           <div>
             <img
               src="/logo.png"
+              className="border border-gray-400"
               alt="GPM"
               style={{
-                width: "70px",
-                height: "70px",
+                width: "100px",
+                height: "100px",
                 borderRadius: "50px",
                 margin: "10px",
+                objectFit:'contain',
+                
               }}
             />
           </div>
