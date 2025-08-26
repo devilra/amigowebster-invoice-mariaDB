@@ -165,7 +165,7 @@ const InvoiceView = () => {
         <div className="mb-6 ">
           <div>
             <img
-              src="/inlogo.jpg"
+              src="/logo.png"
               alt="GPM"
               style={{
                 width: "70px",
