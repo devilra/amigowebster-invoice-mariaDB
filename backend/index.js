@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://amigowebster-invoice-app.vercel.app","http://localhost:5173","https://amigowebster.in" ],
+    origin: ["https://amigowebster-invoice-app.vercel.app","http://localhost:5173","https://amigowebster.in","https://dimgrey-newt-592352.hostingersite.com" ],
      methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
