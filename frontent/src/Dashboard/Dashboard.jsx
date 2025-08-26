@@ -31,7 +31,7 @@ const Dashboard = () => {
           API.get("/api/analytics/total-paid-amount"),
           API.get("/api/analytics/total-balance"),
         ]);
-        console.log(invoiceRes.data.length, totalCustomers);
+        //console.log(invoiceRes.data.length, totalCustomers);
         setLoading(false);
         setInvoiceCount(
           Array.isArray(invoiceRes.data) ? invoiceRes.data.length : 0

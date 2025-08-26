@@ -14,7 +14,7 @@ const ProtectedRoutes = ({ children }) => {
     return <p>Loading...</p>;
   }
 
-  console.log(user);
+  //console.log(user);
 
   if (!user) {
     console.log("No User");
