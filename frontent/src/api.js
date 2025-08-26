@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: ' https://amigowebster-invoice-app.onrender.com',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   //baseURL: "http://localhost:4000",
   withCredentials: true,
 });
