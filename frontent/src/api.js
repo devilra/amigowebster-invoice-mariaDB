@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  //baseURL: "https://mern-invoice-create.onrender.com",
-  baseURL: "http://localhost:4000",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  //baseURL: "http://localhost:4000",
   withCredentials: true,
 });
 
