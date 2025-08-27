@@ -10,15 +10,16 @@ const {
 } = require("../controllers/invoiceController");
 const upload = require("../middlewares/upload");
 const cloudinary = require("../utils/cloudinary");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", createInvoice);
-router.get("/", getAllInvoices);
-router.get("/total-customers", getTotalCustomers);
-router.get("/:id", getInvoiceById);
-router.delete("/:id", deleInvoice);
-router.put("/:id", editInvoice);
+router.post("/", authMiddleware, createInvoice);
+router.get("/", authMiddleware, getAllInvoices);
+router.get("/total-customers", authMiddleware, getTotalCustomers);
+router.get("/:id", authMiddleware,  getInvoiceById);
+router.delete("/:id", authMiddleware, deleInvoice);
+router.put("/:id", authMiddleware, editInvoice);
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   try {

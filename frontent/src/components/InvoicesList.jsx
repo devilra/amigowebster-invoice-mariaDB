@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../api";
+import Spinner3 from "./Spinner";
 
 const InvoicesList = () => {
   const [invoices, setInvoices] = useState([]);
@@ -60,12 +61,7 @@ const InvoicesList = () => {
     fetchInvoices(date);
   };
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-[80vh]">
-        <p className="text-2xl">Loading...</p>
-      </div>
-    );
+  if (loading) return <div className="flex justify-center items-center  text-center mt-20"><Spinner3/></div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">

@@ -163,7 +163,7 @@ const InvoiceView = () => {
         ref={printRef}
         className="bg-white p-6 shadow rounded-md border overflow-x-auto">
         <div className="mb-6 ">
-          <div>
+          {/* <div>
             <img
               src="/logo.png"
               className="border border-gray-400"
@@ -177,10 +177,10 @@ const InvoiceView = () => {
                 
               }}
             />
-          </div>
+          </div> */}
           <div className="flex justify-between header-flex">
             <div>
-              <h1 className="font-extrabold">GPM PROPERTIES</h1>
+              <h1 className="font-extrabold">Amigowebster</h1>
               <h1
                 style={{ fontFamily: "sans-serif", fontSize: "14px" }}
                 className="text-[14px]">

@@ -9,9 +9,9 @@ const {
 
 const router = express.Router();
 
-router.get("/total-amount", getTotalAmount);
-router.get("/total-paid-amount", totalPaidAmount);
+router.get("/total-amount", authMiddleware, getTotalAmount);
+router.get("/total-paid-amount", authMiddleware, totalPaidAmount);
 //router.get("/invoice-persist-paid-amount", persistTotalAmount);
-router.get("/total-balance", getTotalBalanceAmount);
+router.get("/total-balance", authMiddleware, getTotalBalanceAmount);
 
 module.exports = router;

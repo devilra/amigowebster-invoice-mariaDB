@@ -1,5 +1,5 @@
 const Invoice = require("../models/Invoice");
-const TotalPaidInvoice = require("../models/totalPaidInvoice");
+const totalPaidInvoice = require("../models/totalPaidInvoice");
 
 exports.createInvoice = async (req, res) => {
   //console.log(req.user);
@@ -19,16 +19,17 @@ exports.createInvoice = async (req, res) => {
 
     const invoice = new Invoice({
       ...req.body,
-      //user: req.user._id,
+      user: req.user._id,
       invoiceNumber: autoInvoiceNumber,
     });
 
     await invoice.save();
 
     if (invoice.paidAmount > 0) {
-      let record = await TotalPaidInvoice.findOne();
+      let record = await TotalPaidInvoice.findOne({user:req.user_id});
       if (!record) {
         record = await TotalPaidInvoice.create({
+          user:req.user._id,
           totalPaid: invoice.paidAmount,
         });
       } else {
@@ -50,7 +51,7 @@ exports.getAllInvoices = async (req, res) => {
   try {
     const { date } = req.query;
     //console.log(date);
-    let filter = {};
+    let filter = {user : req.user._id};
 
     if (date) {
       const start = new Date(date + "T00:00:00.000Z");
@@ -80,7 +81,7 @@ exports.getAllInvoices = async (req, res) => {
 
 exports.getInvoiceById = async (req, res) => {
   try {
-    const invoice = await Invoice.findById(req.params.id);
+    const invoice = await Invoice.findOne({_id:req.params.id, user:req.user._id});
     if (!invoice) {
       return res.json({
         msg: "Invoice Not Found",
@@ -95,11 +96,20 @@ exports.getInvoiceById = async (req, res) => {
 
 exports.deleInvoice = async (req, res) => {
   try {
-    const invoice = await Invoice.findById(req.params.id);
+    const invoice = await Invoice.findOne({_id:req.params.id, user:req.user._id});
     if (!invoice) {
       return res.json({
         msg: "Invoice Not Found",
       });
+    }
+
+    if(invoice.paidAmount > 0){
+      let record = await totalPaidInvoice.findOne({_id:req.user._id})
+      if(record){
+        record.totalPaid -= invoice.paidAmount
+        if(record.paidAmount < 0) record.totalPaid = 0
+        await record.save()
+      }
     }
     await Invoice.findByIdAndDelete(req.params.id);
     res.json({
@@ -112,9 +122,10 @@ exports.deleInvoice = async (req, res) => {
 
 exports.editInvoice = async (req, res) => {
   try {
-    const updated = await Invoice.findByIdAndUpdate(req.params.id, req.body, {
+    const updated = await Invoice.findOneAndUpdate({_id:req.params.id,user:req.user._id}, req.body, {
       new: true,
     });
+    if (!updated) return res.json({ msg: "Invoice Not Found or Unauthorized" });
     res.json(updated);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -125,7 +136,7 @@ exports.editInvoice = async (req, res) => {
 
 exports.getTotalCustomers = async (req, res) => {
   try {
-    const customers = await Invoice.distinct("customerName");
+    const customers = await Invoice.distinct("customerName", {user:req.user._id});
     //console.log(customers);
     if (!customers || customers.length === 0) {
       return res.status(404).json({ message: "Invoice not found" });

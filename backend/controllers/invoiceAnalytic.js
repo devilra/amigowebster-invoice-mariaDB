@@ -6,11 +6,11 @@ const TotalPaidInvoice = require("../models/totalPaidInvoice");
 exports.getTotalAmount = async (req, res) => {
   try {
     const totalAmount = await Invoice.aggregate([
-      // {
-      //   $match: {
-      //     user: req.user._id,
-      //   },
-      // },
+      {
+        $match: {
+          user: req.user._id,
+        },
+      },
       {
         $group: {
           _id: null,
@@ -39,6 +39,7 @@ exports.totalPaidAmount = async (req, res) => {
     const result = await Invoice.aggregate([
       {
         $match: {
+           user:req.user._id,
           paidAmount: {
             $gt: 0,
           },
@@ -74,6 +75,11 @@ exports.totalPaidAmount = async (req, res) => {
 exports.getTotalBalanceAmount = async (req, res) => {
   try {
     const totalBalanceAmount = await Invoice.aggregate([
+      {
+        $match:{
+          user : req.user._id
+        }
+      },
       {
         $group: {
           _id: null,
