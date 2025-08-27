@@ -2,7 +2,7 @@ import axios from "axios";
 
 const basedURL= import.meta.env.VITE_BACKEND_URL
 
-console.log(basedURL)
+//console.log(basedURL)
 
 const API = axios.create({
   baseURL:basedURL,

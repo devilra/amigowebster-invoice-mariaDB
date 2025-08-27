@@ -20,9 +20,9 @@ const App = () => {
   const { loading } = useSelector((state) => state.auth);
  
 
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, [dispatch]);
 
   const location = useLocation();
 
