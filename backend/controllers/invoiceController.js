@@ -1,10 +1,10 @@
 const Invoice = require("../models/Invoice");
-const totalPaidInvoice = require("../models/totalPaidInvoice");
+const TotalPaidInvoice = require("../models/totalPaidInvoice");
 
 exports.createInvoice = async (req, res) => {
   //console.log(req.user);
   try {
-    const lastInvoice = await Invoice.findOne().sort({ invoiceNumber: -1 });
+    const lastInvoice = await Invoice.findOne({user:req.user._id}).sort({ invoiceNumber: -1 });
     let newNumber = 1;
 
     if (lastInvoice && lastInvoice.invoiceNumber) {
@@ -26,7 +26,7 @@ exports.createInvoice = async (req, res) => {
     await invoice.save();
 
     if (invoice.paidAmount > 0) {
-      let record = await TotalPaidInvoice.findOne({user:req.user_id});
+      let record = await TotalPaidInvoice.findOne({user:req.user._id});
       if (!record) {
         record = await TotalPaidInvoice.create({
           user:req.user._id,
@@ -43,6 +43,7 @@ exports.createInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error.message });
   }
 };
@@ -104,7 +105,7 @@ exports.deleInvoice = async (req, res) => {
     }
 
     if(invoice.paidAmount > 0){
-      let record = await totalPaidInvoice.findOne({_id:req.user._id})
+      let record = await TotalPaidInvoice.findOne({_id:req.user._id})
       if(record){
         record.totalPaid -= invoice.paidAmount
         if(record.paidAmount < 0) record.totalPaid = 0

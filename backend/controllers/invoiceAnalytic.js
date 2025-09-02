@@ -1,27 +1,31 @@
 // Get TotalAmount customers
 
+const { ObjectId } = require("mongoose").Types;
 const Invoice = require("../models/Invoice");
 const TotalPaidInvoice = require("../models/totalPaidInvoice");
 
+const mongoose = require("mongoose");
+
 exports.getTotalAmount = async (req, res) => {
+
   try {
+    const userId =
+      typeof req.user._id === "string"
+        ? new mongoose.Types.ObjectId(req.user._id)
+        : req.user._id;
     const totalAmount = await Invoice.aggregate([
       {
         $match: {
-          user: req.user._id,
+        user: userId
         },
       },
       {
         $group: {
           _id: null,
-          total: {
-            $sum: "$totalAmount",
-          },
+          total: { $sum: "$totalAmount" },
         },
       },
     ]);
-
-    //console.log(totalAmount);
 
     res.json({
       totalAmount: totalAmount.length > 0 ? totalAmount[0].total : 0,
@@ -32,14 +36,19 @@ exports.getTotalAmount = async (req, res) => {
   }
 };
 
+
 //Total Paid Amount
 
 exports.totalPaidAmount = async (req, res) => {
   try {
+    const userId =
+      typeof req.user._id === "string"
+        ? new mongoose.Types.ObjectId(req.user._id)
+        : req.user._id;
     const result = await Invoice.aggregate([
       {
         $match: {
-           user:req.user._id,
+           user:userId,
           paidAmount: {
             $gt: 0,
           },
@@ -73,11 +82,17 @@ exports.totalPaidAmount = async (req, res) => {
 // };
 
 exports.getTotalBalanceAmount = async (req, res) => {
+ 
+
   try {
+    const userId =
+      typeof req.user._id === "string"
+        ? new mongoose.Types.ObjectId(req.user._id)
+        : req.user._id;
     const totalBalanceAmount = await Invoice.aggregate([
       {
         $match:{
-          user : req.user._id
+          user :userId
         }
       },
       {

@@ -41,10 +41,13 @@ exports.login = async (req, res) => {
       expiresIn: "7d",
     });
 
+    console.log(token);
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: true, // localhost ku false, deploy panna true
       sameSite: "none",
+      path: "/", // ✅ ensure cookie works for all routes
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -64,18 +67,19 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "Lax",
-    secure: false,
+    sameSite: "none",
+    secure: true,
+    path: "/", // ✅ clear cookie correctly
   });
   res.status(200).json({ msg: "Logged out successfully" });
 };
 
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select("-password");
+    const user = await User.findById(req.user._id).select("-password");
     if (!user) return res.status(404).json({ msg: "User not found" });
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ msg: "Server error", error: err.message });
+    res.status(500).json({ msg: "Server error", error: error.message });
   }
 };

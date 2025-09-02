@@ -9,7 +9,7 @@ router.get("/storage-info", async (req, res) => {
 
     // Fetch DB stats
     const stats = await db.stats();
-    console.log("MongoDB Stats:", stats);
+    //console.log("MongoDB Stats:", stats);
 
     // Custom Max Storage Limit (500 MB)
     const maxLimit = 500 * 1024 * 1024; // 500 MB in bytes
@@ -21,7 +21,7 @@ router.get("/storage-info", async (req, res) => {
     const usedPercent = maxLimit > 0 ? ((dataSize / maxLimit) * 100).toFixed(2) : "0.00";
 
     // Debugging
-    console.log("DEBUG =>", { dataSize, maxLimit, freeSpace, freePercent, usedPercent });
+    //console.log("DEBUG =>", { dataSize, maxLimit, freeSpace, freePercent, usedPercent });
 
     // Response
     res.json({

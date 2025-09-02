@@ -16,7 +16,7 @@ const Dashboard = () => {
   const [totalPaidAmount, setTotalPaidAmount] = useState(0);
   const [balanceAmount, setBalanceAmount] = useState(0);
   const [storage, setStorage] = useState({});
-  const [progress, setProgress] = useState(10);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
