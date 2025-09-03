@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const uploadRoute = require("./routes/uploadRoute");
 const analyticRoute = require("./routes/invoiceAnalyticRoute.js");
 const storageStats = require("./routes/storageInfoRoutes.js");
+const settingRoutes = require("./routes/settingRoutes.js");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -31,6 +32,7 @@ app.use(
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/upload", uploadRoute);
+app.use("/api/settings", settingRoutes);
 app.use("/api/analytics", analyticRoute);
 app.use("/api", storageStats);
 

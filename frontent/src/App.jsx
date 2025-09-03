@@ -13,12 +13,13 @@ import NotFound from "./components/NotFound";
 import Dashboard from "./Dashboard/Dashboard";
 import Customers from "./Dashboard/Customers";
 import API from "./api";
+import Setting from "./Dashboard/Setting";
+import GlobalToast from "./components/GlobalToast";
 
 const App = () => {
   const dispatch = useDispatch();
 
   const { loading } = useSelector((state) => state.auth);
- 
 
   // useEffect(() => {
   //   dispatch(getMe());
@@ -35,6 +36,7 @@ const App = () => {
 
   return (
     <>
+      <GlobalToast />
       {!shouldNavbar && <Navbar />}
       <Routes>
         <Route
@@ -43,9 +45,11 @@ const App = () => {
             <ProtectedRoutes>
               <HomePage />
             </ProtectedRoutes>
-          }>
+          }
+        >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="customer" element={<Customers />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
 
         <Route

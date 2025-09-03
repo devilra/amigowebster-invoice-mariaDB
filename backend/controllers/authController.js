@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // localhost ku false, deploy panna true
+      secure: false, // localhost ku false, deploy panna true
       sameSite: "none",
       path: "/", // ✅ ensure cookie works for all routes
       maxAge: 7 * 24 * 60 * 60 * 1000,

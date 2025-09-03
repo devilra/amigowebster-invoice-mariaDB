@@ -12,8 +12,9 @@ const NotFound = () => {
         Oops! The page you are looking for doesn’t exist.
       </p>
       <Link
-        to="/"
-        className="mt-6 px-6 py-3 text-sm font-semibold bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg transition-all duration-300">
+        to="/dashboard"
+        className="mt-6 px-6 py-3 text-sm font-semibold bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg transition-all duration-300"
+      >
         Go Home
       </Link>
     </div>

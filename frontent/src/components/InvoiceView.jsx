@@ -5,11 +5,31 @@ import { useReactToPrint } from "react-to-print";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import html2pdf from "html2pdf.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getMySetting } from "../redux/Slices/settingSlice";
+
+const SkeletonLoader = () => {
+  return (
+    <div className="animate-pulse p-4 max-w-5xl mx-auto">
+      <div className="h-6 bg-gray-300 rounded w-1/4 mb-4"></div>
+      <div className="h-40 bg-gray-200 rounded mb-4"></div>
+      <div className="grid grid-cols-5 gap-2">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <div key={i} className="h-6 bg-gray-300 rounded"></div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const InvoiceView = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = useState(null);
   const printRef = useRef();
+  const dispatch = useDispatch();
+
+  const { item: settings } = useSelector((state) => state.settings);
+  console.log(settings);
 
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -22,6 +42,10 @@ const InvoiceView = () => {
     };
     fetchInvoice();
   }, [id]);
+
+  useEffect(() => {
+    dispatch(getMySetting());
+  }, [dispatch]);
 
   const handlePrint = () => {
     const element = printRef.current;
@@ -91,34 +115,10 @@ const InvoiceView = () => {
     document.body.style.zoom = originalZoom;
   };
 
-  // const handleDownloadPDF = async () => {
-  //   const element = printRef.current;
-  //   const canvas = await html2canvas(element, { scale: 2 });
-  //   const imgData = canvas.toDataURL("image/png");
-
-  //   const pdf = new jsPDF("p", "mm", "a4");
-  //   const pdfWidth = pdf.internal.pageSize.getWidth();
-  //   const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-  //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-  //   // Instead of saving directly, open in new tab
-  //   const pdfBlob = pdf.output("blob");
-  //   const pdfUrl = URL.createObjectURL(pdfBlob);
-
-  //   const newWindow = window.open(pdfUrl, "_blank");
-  //   if (newWindow) {
-  //     // Wait a bit to ensure PDF loads, then print
-  //     newWindow.onload = () => {
-  //       newWindow.print();
-  //     };
-  //   }
-  // };
-
   if (!invoice) {
     return (
-      <div className="p-4 flex justify-center items-center h-[80vh] text-2xl">
-        Loading...
+      <div>
+        <SkeletonLoader />
       </div>
     );
   }
@@ -148,12 +148,14 @@ const InvoiceView = () => {
         <div className="flex gap-2">
           <button
             onClick={handlePrint}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
             Print
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
             Download PDF
           </button>
         </div>
@@ -161,7 +163,8 @@ const InvoiceView = () => {
 
       <div
         ref={printRef}
-        className="bg-white p-6 shadow rounded-md border overflow-x-auto">
+        className="bg-white p-6 shadow rounded-md border overflow-x-auto"
+      >
         <div className="mb-6 ">
           {/* <div>
             <img
@@ -180,36 +183,28 @@ const InvoiceView = () => {
           </div> */}
           <div className="flex justify-between header-flex">
             <div>
-              <h1 className="font-extrabold">Amigowebster</h1>
-              <h1
-                style={{ fontFamily: "sans-serif", fontSize: "14px" }}
-                className="text-[14px]">
+              <h1 className="font-extrabold">
+                {settings?.businessName.toUpperCase()}
+              </h1>
+              <h1 style={{ fontSize: "14px" }} className="text-[14px]">
                 Business Number
               </h1>
-              <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>
-                9176552727
+              <p style={{ fontSize: "14px" }}>{settings?.businessNumber}</p>
+              <p className="w-[50px]" style={{ fontSize: "12px" }}>
+                {settings?.address}
               </p>
-              <p style={{ fontSize: "12px", fontFamily: "monospace" }}>
-                GPM silver spring
-                <br />
-                apt, Nanmangalam
-                <br />
-                chennai
-                <br />
-                600129
-                <br />
-                9176552727
-                <br />
-                info@gpmproperties.in
+              <p className="w-[50px]" style={{ fontSize: "12px" }}>
+                {settings?.email}
+              </p>
+              <p className="w-[50px]" style={{ fontSize: "12px" }}>
+                {settings?.phone}
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-lg text-gray-700 mb-2">
                 Customer Info
               </h3>
-              <div
-                style={{ fontFamily: "monospace" }}
-                className="text-sm text-gray-600">
+              <div style={{}} className="text-sm text-gray-600">
                 <p>
                   <strong>Name:</strong> {invoice.customerName}
                 </p>
@@ -311,7 +306,8 @@ const InvoiceView = () => {
             display: "block",
             marginLeft: "auto",
           }}
-          className="text-right mt-6 space-y-1 text-gray-700 text-sm sm:text-base">
+          className="text-right mt-6 space-y-1 text-gray-700 text-sm sm:text-base"
+        >
           <p>
             <strong>Total:</strong> ₹{invoice.totalAmount}
           </p>
