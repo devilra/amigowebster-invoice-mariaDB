@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/Slices/authSlice";
+import { getMe, loginUser } from "../redux/Slices/authSlice";
 import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 
@@ -21,6 +21,7 @@ const Login = () => {
         //setLoading(false);
         toast.success("Login Successfull", {});
         navigate("/dashboard");
+        dispatch(getMe());
       }
     } catch (error) {
       //setLoading(false);

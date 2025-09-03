@@ -21,10 +21,6 @@ const App = () => {
 
   const { loading } = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   dispatch(getMe());
-  // }, [dispatch]);
-
   const location = useLocation();
 
   const noNavbarRoutes = ["/login", "/register"];
@@ -33,6 +29,10 @@ const App = () => {
   const is404 = !validRoutes.some((path) => location.pathname.startsWith(path));
 
   const shouldNavbar = noNavbarRoutes.includes(location.pathname) || is404;
+
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, [dispatch]);
 
   return (
     <>

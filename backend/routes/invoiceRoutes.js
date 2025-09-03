@@ -10,14 +10,14 @@ const {
 } = require("../controllers/invoiceController");
 const upload = require("../middlewares/upload");
 const cloudinary = require("../utils/cloudinary");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router.post("/", authMiddleware, createInvoice);
 router.get("/", authMiddleware, getAllInvoices);
 router.get("/total-customers", authMiddleware, getTotalCustomers);
-router.get("/:id", authMiddleware,  getInvoiceById);
+router.get("/:id", authMiddleware, getInvoiceById);
 router.delete("/:id", authMiddleware, deleInvoice);
 router.put("/:id", authMiddleware, editInvoice);
 

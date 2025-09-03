@@ -13,17 +13,21 @@ const Navbar = () => {
       <nav className="bg-neutral-900 p-4 md:p-5 relative z-50 hidden md:block">
         <div className="flex justify-between items-center   max-w-7xl mx-auto">
           {/* Left side - Home link */}
-          <div>
+          <div className="">
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
                 ` text-[15px] mx-2 font-bold  px-5 py-4 rounded text-center ${
                   isActive ? "bg-white text-black" : "text-neutral-50"
                 }  `
-              }>
+              }
+            >
               Home
             </NavLink>
           </div>
+          <h1 className="font-michroma hidden md:block text-lg md:text-3xl tracking-[1px] text-white font-extrabold bg-gradient-to-r from-neutral-700 via-slate-100 to-gray-700 bg-clip-text text-transparent">
+            Amigowebster
+          </h1>
 
           {/* Menu Items */}
           <div className="flex flex-row space-x-4">
@@ -33,7 +37,8 @@ const Navbar = () => {
                 ` text-[15px] mx-2 font-bold  px-5 py-4 rounded text-center ${
                   isActive ? "bg-white text-black" : "text-neutral-50"
                 }  `
-              }>
+              }
+            >
               Invoices List
             </NavLink>
             <NavLink
@@ -42,12 +47,14 @@ const Navbar = () => {
                 ` text-[15px] mx-5 font-bold  px-5 py-4 rounded text-center ${
                   isActive ? "bg-white text-black" : "text-neutral-50"
                 }  `
-              }>
+              }
+            >
               New Invoice
             </NavLink>
             <button
               onClick={() => dispatch(logoutUser())}
-              className="text-neutral-50 text-[14px] border font-bold border-neutral-100 px-5 py-3">
+              className="text-neutral-50 text-[14px] border font-bold border-neutral-100 px-5 py-3"
+            >
               Logout
             </button>
           </div>
@@ -62,7 +69,8 @@ const Navbar = () => {
             ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
-          }>
+          }
+        >
           Home
         </NavLink>
         <NavLink
@@ -71,7 +79,8 @@ const Navbar = () => {
             ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
-          }>
+          }
+        >
           Invoices List
         </NavLink>
         <NavLink
@@ -80,12 +89,14 @@ const Navbar = () => {
             ` text-[10px]  font-bold  px-3 py-3 rounded text-center ${
               isActive ? "bg-white text-black" : "text-neutral-50"
             }  `
-          }>
+          }
+        >
           New Invoice
         </NavLink>
         <button
           onClick={() => dispatch(logoutUser())}
-          className={`text-neutral-50 text-[10px]  font-bold  px-3 py-3 rounded text-center`}>
+          className={`text-neutral-50 text-[10px]  font-bold  px-3 py-3 rounded text-center`}
+        >
           Logout
         </button>
       </nav>

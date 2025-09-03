@@ -1,3 +1,6 @@
+/* src/index.css */
+@import url("https://fonts.googleapis.com/css2?family=Michroma&family=Oxanium:wght@200..800&family=Saira:wdth,wght@62.4,413&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

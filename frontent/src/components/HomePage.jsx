@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import DashboardNavbar from "../Dashboard/DashboardNavbar";
+import { useDispatch } from "react-redux";
+import { getMe } from "../redux/Slices/authSlice";
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getMe());
+  // }, []);
+
   return (
     <div className="bg-white flex flex-col md:flex-row  ">
       {/* Left Sidebar - Desktop only */}
@@ -16,7 +24,8 @@ const HomePage = () => {
                   ? " md:border-l-8 md:border-black  bg-black md:bg-white text-white md:text-black  py-1  font-extrabold "
                   : ""
               }`
-            }>
+            }
+          >
             Dashboard
           </NavLink>
           <NavLink
@@ -27,7 +36,8 @@ const HomePage = () => {
                   ? " md:border-l-8 md:border-black  bg-black md:bg-white text-white md:text-black  py-1  font-extrabold "
                   : ""
               }`
-            }>
+            }
+          >
             Invoices
           </NavLink>
           <NavLink
@@ -38,7 +48,8 @@ const HomePage = () => {
                   ? " md:border-l-8 md:border-black  bg-black md:bg-white text-white md:text-black  py-1  font-extrabold "
                   : ""
               }`
-            }>
+            }
+          >
             Customers
           </NavLink>
           <NavLink
@@ -49,7 +60,8 @@ const HomePage = () => {
                   ? " md:border-l-8 md:border-black  bg-black md:bg-white text-white md:text-black  py-1  font-extrabold "
                   : ""
               }`
-            }>
+            }
+          >
             Settings
           </NavLink>
         </div>

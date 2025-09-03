@@ -1,10 +1,10 @@
 const express = require("express");
-const authMiddleware = require("../middlewares/authMiddleware");
 const upload = require("../middlewares/upload");
 const {
   createSetting,
   getMySetting,
 } = require("../controllers/settingController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 // Create or update setting
