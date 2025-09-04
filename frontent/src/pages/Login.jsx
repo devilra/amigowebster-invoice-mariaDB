@@ -67,7 +67,7 @@ const Login = () => {
           //   loading && "cursor-not-allowed"
           // }`}
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? "Logging in...." : "Login"}
         </Button>
       </form>
     </div>
