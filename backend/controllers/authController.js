@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -88,3 +89,82 @@ exports.getMe = async (req, res) => {
     res.status(500).json({ msg: "Server error", error: error.message });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // email update panna try pannuraangala check pannunga
+    if (email && email !== user.email) {
+      const emailExist = await User.findOne({ email });
+      if (emailExist) {
+        return res.status(400).json({ msg: "Email already taken" });
+      }
+      user.email = email;
+    }
+
+    if (name) user.name = name;
+
+    await user.save();
+
+    res.status(200).json({
+      msg: "Profile updated successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error: error.message });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // current password check
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch)
+      return res.status(400).json({ msg: "Current password is incorrect" });
+
+    // hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    await user.save();
+    res.status(200).json({ msg: "Password changed successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error: error.message });
+  }
+};
+
+// exports.forgotPassword = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ msg: "User not found" });
+
+//     // generate token
+
+//     const resetToken = crypto.randomBytes(32).toString("hex");
+//     const resetTokenHash = crypto
+//       .createHash("sha256")
+//       .update(resetToken)
+//       .digest("hex");
+
+//     // save token + expiry (15 mins)
+
+//     user.resetPasswordToken = resetToken;
+//     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+//     await user.save();
+
+//     const resetURL = ``;
+//   } catch (error) {}
+// };

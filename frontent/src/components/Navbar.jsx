@@ -25,7 +25,10 @@ const Navbar = () => {
               Home
             </NavLink>
           </div>
-          <h1 className="font-michroma hidden md:block text-lg md:text-3xl tracking-[1px] text-white font-extrabold bg-gradient-to-r from-neutral-700 via-slate-100 to-gray-700 bg-clip-text text-transparent">
+          {/* <h1 className="font-michroma hidden md:block text-lg md:text-3xl tracking-[1px] text-white font-extrabold bg-gradient-to-l from-neutral-700 via-slate-100 to-gray-700 bg-clip-text text-transparent">
+            Amigowebster
+          </h1> */}
+          <h1 className="font-michroma hidden md:block text-lg md:text-3xl tracking-[1px] font-extrabold bg-gradient-to-r from-neutral-700 via-slate-50 to-neutral-700 bg-clip-text text-transparent">
             Amigowebster
           </h1>
 

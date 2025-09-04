@@ -15,6 +15,8 @@ import Customers from "./Dashboard/Customers";
 import API from "./api";
 import Setting from "./Dashboard/Setting";
 import GlobalToast from "./components/GlobalToast";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,12 +25,17 @@ const App = () => {
 
   const location = useLocation();
 
-  const noNavbarRoutes = ["/login", "/register"];
+  const noNavbarRoutes = ["/login", "/register", "/forgot-password"];
+
+  // reset-password route ku special check
+  const isResetPasswordRoute = location.pathname.startsWith("/reset-password");
+
   const validRoutes = ["/", "/invoices", "/new", "/invoice"];
 
   const is404 = !validRoutes.some((path) => location.pathname.startsWith(path));
 
-  const shouldNavbar = noNavbarRoutes.includes(location.pathname) || is404;
+  const shouldNavbar =
+    noNavbarRoutes.includes(location.pathname) || isResetPasswordRoute || is404;
 
   // useEffect(() => {
   //   dispatch(getMe());
@@ -68,6 +75,8 @@ const App = () => {
             </ProtectedRoutes>
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/invoice/:id" element={<InvoiceView />} />
         <Route path="/new/:invoiceId" element={<NewBill />} />
         <Route path="/login" element={<Login />} />

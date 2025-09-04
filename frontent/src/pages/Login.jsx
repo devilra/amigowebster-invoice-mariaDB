@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe, loginUser } from "../redux/Slices/authSlice";
 import { toast } from "react-toastify";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -61,6 +61,8 @@ const Login = () => {
           type="submit"
           disabled={loading}
           className="w-full"
+          loadingPosition="start"
+          startIcon={loading && <CircularProgress size={20} color="inherit" />}
           // className={`w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition disabled:opacity-60 ${
           //   loading && "cursor-not-allowed"
           // }`}
