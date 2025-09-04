@@ -17,6 +17,7 @@ import Setting from "./Dashboard/Setting";
 import GlobalToast from "./components/GlobalToast";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import Profile from "./Dashboard/Profile";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="customer" element={<Customers />} />
           <Route path="setting" element={<Setting />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         <Route

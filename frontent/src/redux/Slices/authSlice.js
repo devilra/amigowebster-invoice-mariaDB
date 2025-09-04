@@ -41,14 +41,53 @@ export const getMe = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
   }
 });
 
+// Profile update (name/email)
+
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (formData, thunkAPI) => {
+    try {
+      const res = await API.put("/api/auth/update-profile", formData);
+      console.log(res.data.user);
+      return res.data.user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.msg || "Profile update failed"
+      );
+    }
+  }
+);
+
+// Password change
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (passwordData, thunkAPI) => {
+    try {
+      await API.put("/api/auth/change-password", passwordData);
+      return true;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.msg || "Password change failed"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
     loading: false,
     error: null,
+    success: null,
   },
-  reducers: {},
+  reducers: {
+    clearMessage: (state) => {
+      state.error = null;
+      state.success = null;
+    },
+  },
   extraReducers: (builder) => {
     //Login
     builder
@@ -80,8 +119,32 @@ const authSlice = createSlice({
       .addCase(getMe.rejected, (state) => {
         state.user = null;
         state.loading = false;
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.success = "Profile updated successfully!";
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.loading = false;
+        state.success = "Password changed successfully!";
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
+export const { clearMessage } = authSlice.actions;
 export default authSlice.reducer;
