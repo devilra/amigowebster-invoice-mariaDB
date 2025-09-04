@@ -56,6 +56,9 @@ exports.forgotPassword = async (req, res) => {
 
     // save token + expiry (15 mins)
 
+    const local = process.env.LOCALHOST_CLIENT_URL;
+    const production = process.env.PRODUCTION_CLIENT_URL;
+
     user.resetPasswordToken = resetTokenHash;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
@@ -63,7 +66,7 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+    const resetUrl = `${production}/reset-password/${resetToken}`;
     const message = getResetPasswordTemplate(resetUrl, error.name);
 
     // send email
