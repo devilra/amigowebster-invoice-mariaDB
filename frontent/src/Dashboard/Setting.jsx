@@ -58,7 +58,7 @@ const Setting = () => {
     const { name, value, files } = e.target;
     let newValue = value;
 
-    console.log(value);
+    //console.log(value);
 
     // Only allow numbers for phone and businessNumber
 
@@ -77,12 +77,19 @@ const Setting = () => {
       const updatedForm = { ...prev, [name]: newValue };
 
       // Detect changes correctly using updatedForm
-      if (item) {
+      if (item && Object.keys(item).length > 0) {
+        // Existing user → check difference
         const changed = Object.entries(updatedForm).some(([key, val]) => {
           if (key === "logo") return val instanceof File;
           return val !== item[key];
         });
         setIsChanged(changed);
+      } else {
+        // New user (no item yet) → enable if any field has value
+        const hasAnyValue = Object.values(updatedForm).some(
+          (val) => val && val !== ""
+        );
+        setIsChanged(hasAnyValue);
       }
 
       return updatedForm;

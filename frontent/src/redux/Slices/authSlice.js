@@ -79,6 +79,8 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     loading: false,
+    authLoading: false, //  only for getMe (auth check)
+    actionLoading: false, //  for updateProfile, changePassword
     error: null,
     success: null,
   },
@@ -111,25 +113,31 @@ const authSlice = createSlice({
       })
       .addCase(getMe.pending, (state) => {
         state.loading = true;
+        //state.authLoading = true;
       })
       .addCase(getMe.fulfilled, (state, action) => {
         state.loading = false;
+        //state.authLoading = false;
         state.user = action.payload;
       })
       .addCase(getMe.rejected, (state) => {
         state.user = null;
         state.loading = false;
+        //state.authLoading = false;
       })
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
+        //state.actionLoading = true;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
+        //state.actionLoading = false;
         state.user = action.payload;
         state.success = "Profile updated successfully!";
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
+        //state.actionLoading = false;
         state.error = action.payload;
       })
       .addCase(changePassword.pending, (state) => {

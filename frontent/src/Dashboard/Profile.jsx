@@ -12,10 +12,14 @@ import { useState } from "react";
 import { Button, CircularProgress, IconButton } from "@mui/material";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { loading, user, success, error } = useSelector((state) => state.auth);
+  const { loading, user, success, error, actionLoading } = useSelector(
+    (state) => state.auth
+  );
   const [form, setForm] = useState({ name: "", email: "" });
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -28,6 +32,14 @@ const Profile = () => {
     name: false,
     email: false,
   });
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+  });
+
+  const togglePassword = (field) => {
+    setShowPassword((prev) => ({ ...showPassword, [field]: !prev[field] }));
+  };
 
   useEffect(() => {
     if (!user) {
@@ -139,40 +151,66 @@ const Profile = () => {
 
         {showPasswordFields && (
           <form onSubmit={handlePasswordSave} className="mt-4 space-y-4">
-            <div>
+            <div className="relative">
               <TextField
-                type="password"
+                type={showPassword.current ? "text" : "password"}
                 name="currentPassword"
                 id="current-password"
                 value={passwordForm.currentPassword}
                 variant="outlined"
                 onChange={handlePasswordChange}
-                label={
-                  <>
-                    Current Password <span style={{ color: "red" }}>*</span>
-                  </>
-                }
+                required
+                label="Current Password"
                 className="w-full border rounded-md p-2"
+                sx={{
+                  "& .MuiFormLabel-asterisk": {
+                    color: "red",
+                  },
+                }}
               />
+              {passwordForm.currentPassword && (
+                <button
+                  onClick={() => togglePassword("current")}
+                  type="button"
+                  className="absolute top-3 right-3 "
+                >
+                  {showPassword.current ? <Visibility /> : <VisibilityOff />}
+                </button>
+              )}
             </div>
-            <div>
+            <div className="relative">
               <TextField
-                type="password"
+                type={showPassword.new ? "text" : "password"}
                 name="newPassword"
                 variant="outlined"
                 id="new-password"
                 onChange={handlePasswordChange}
                 value={passwordForm.newPassword}
-                label={
-                  <>
-                    New Password <span style={{ color: "red" }}>*</span>
-                  </>
-                }
+                required
+                label="New Password"
                 className="w-full border rounded-md p-2"
+                sx={{
+                  "& .MuiFormLabel-asterisk": {
+                    color: "red",
+                  },
+                }}
               />
+              {passwordForm.newPassword && (
+                <button
+                  onClick={() => togglePassword("new")}
+                  type="button"
+                  className="absolute top-3 right-3 "
+                >
+                  {showPassword.new ? <Visibility /> : <VisibilityOff />}
+                </button>
+              )}
             </div>
             <Button
-              disabled={loading}
+              disabled={
+                loading ||
+                !passwordForm.currentPassword.trim() ||
+                !passwordForm.newPassword.trim()
+              }
               startIcon={
                 loading && <CircularProgress size={20} color="inherit" />
               }
