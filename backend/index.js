@@ -24,6 +24,7 @@ app.use(
       "https://amigowebster.in",
       "https://dimgrey-newt-592352.hostingersite.com",
       "https://amigowebster-invoice-app-git-dev-devilras-projects.vercel.app",
+      "https://amigowebster-invoice-mariadb.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
