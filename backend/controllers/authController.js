@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
     res.status(201).json({
       msg: "User registered",
       newUser: {
-        id: newUser._id,
+        id: newUser.id,
         name: newUser.name,
         email: newUser.email,
       },
@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ msg: "Invalid credentials" });
 
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user.id, role: user.role },
       process.env.JWT_SECRET,
       {
         expiresIn: "7d",
@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // localhost ku false, deploy panna true
+      secure: true, // localhost ku false, deploy panna true
       sameSite: "none",
       path: "/", // ✅ ensure cookie works for all routes
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       msg: "Login successful",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -95,7 +95,7 @@ exports.getMe = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const { name, email } = req.body;
-    const user = await User.findByPk(req.user._id);
+    const user = await User.findByPk(req.user.id);
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // email update panna try pannuraangala check pannunga
@@ -114,7 +114,7 @@ exports.updateProfile = async (req, res) => {
     res.status(200).json({
       msg: "Profile updated successfully",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -128,7 +128,7 @@ exports.updateProfile = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await User.findByPk(req.user._id);
+    const user = await User.findByPk(req.user.id);
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // current password check
