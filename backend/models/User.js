@@ -1,34 +1,44 @@
-const mongoose = require("mongoose");
+//const mongoose = require("mongoose");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/mariadb");
 
-const userSchema = new mongoose.Schema(
+const User = sequelize.define(
+  "User",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     name: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     email: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
       unique: true,
-      lowercase: true,
     },
     password: {
-      type: String,
-      required: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      type: DataTypes.ENUM("user", "admin"),
+      defaultValue: "user",
     },
     resetPasswordToken: {
-      type: String,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     resetPasswordExpire: {
-      type: Date,
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = User;

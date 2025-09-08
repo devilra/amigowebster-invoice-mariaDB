@@ -10,6 +10,7 @@ const analyticRoute = require("./routes/invoiceAnalyticRoute.js");
 const storageStats = require("./routes/storageInfoRoutes.js");
 const settingRoutes = require("./routes/settingRoutes.js");
 const customerRoutes = require("./routes/customerRoutes");
+const sequelize = require("./config/mariadb.js");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -39,7 +40,15 @@ app.use("/api/analytics", analyticRoute);
 app.use("/api", storageStats);
 app.use("/api/customers", customerRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server Connected ${PORT}`);
-  connectDB();
-});
+// app.listen(PORT, () => {
+//   console.log(`Server Connected ${PORT}`);
+//   connectDB();
+// });
+
+sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log("Tables synced!"); // create tables automatically
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => console.error(err));

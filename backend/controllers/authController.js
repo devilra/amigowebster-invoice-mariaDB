@@ -1,13 +1,13 @@
-const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const User = require("../models/User");
 
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const userExist = await User.findOne({ email });
+    const userExist = await User.findOne({ where: { email } });
     if (userExist) return res.status(400).json({ msg: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // localhost ku false, deploy panna true
+      secure: false, // localhost ku false, deploy panna true
       sameSite: "none",
       path: "/", // ✅ ensure cookie works for all routes
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -82,7 +82,9 @@ exports.logout = async (req, res) => {
 
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
+    const user = await User.findByPk(req.user._id, {
+      attributes: { exclude: ["password"] },
+    });
     if (!user) return res.status(404).json({ msg: "User not found" });
     res.status(200).json({ user });
   } catch (error) {
@@ -93,12 +95,12 @@ exports.getMe = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const { name, email } = req.body;
-    const user = await User.findById(req.user._id);
+    const user = await User.findByPk(req.user._id);
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // email update panna try pannuraangala check pannunga
     if (email && email !== user.email) {
-      const emailExist = await User.findOne({ email });
+      const emailExist = await User.findOne({ where: { email } });
       if (emailExist) {
         return res.status(400).json({ msg: "Email already taken" });
       }
@@ -126,7 +128,7 @@ exports.updateProfile = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.user._id);
+    const user = await User.findByPk(req.user._id);
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     // current password check

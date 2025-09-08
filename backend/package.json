@@ -25,12 +25,15 @@
     "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.5",
     "mongoose": "^8.12.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
+    "mysql2": "^3.14.4",
     "nodemailer": "^6.10.1",
     "nodemon": "^3.1.9",
+    "sequelize": "^6.37.7",
     "sharp": "^0.33.5",
     "socket.io": "^4.8.1"
   }

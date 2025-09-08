@@ -8,7 +8,7 @@ exports.authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     //console.log(decoded);
-    req.user = { _id: decoded.id, role: decoded.role };
+    req.user = { _id: decoded.id, role: decoded.role }; // Sequelize la id field integer
     //console.log(req.user)
     //console.log("middleware finish");
     next();
